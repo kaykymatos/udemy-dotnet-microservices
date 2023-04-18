@@ -20,14 +20,12 @@ namespace GeekShooping.ProductApi.Model
         public string Description { get; set; } = string.Empty;
 
         [Column("Category_Id")]
-        [Required]
         public long Category_Id { get; set; }
-        [NotMapped]
         [ForeignKey(nameof(Category_Id))]
-        public Category Category { get; set; } = new Category();
+        public Category Category { get; set; }
 
         [Column("Image_Url")]
         [StringLength(300)]
-        public string Image_Url { get; set; } = string.Empty;
+        public string ImageURL { get; set; } = string.Empty;
     }
 }

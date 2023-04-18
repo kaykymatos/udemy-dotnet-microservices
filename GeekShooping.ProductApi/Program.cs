@@ -1,6 +1,9 @@
+using AutoMapper;
+using GeekShooping.CategoryApi.Repository;
+using GeekShooping.ProductApi.Config;
 using GeekShooping.ProductApi.Model.Context;
+using GeekShooping.ProductApi.Repository;
 using Microsoft.EntityFrameworkCore;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +11,13 @@ var connection = builder.Configuration["MySqlConnection:MySqlConnectionString"];
 builder.Services.AddDbContext<MySqlContext>(options => options.UseMySql(connection,
         new MySqlServerVersion(
                 new Version(8,0,32))));
+IMapper mapper = MappingConfig.RegisterMaps().CreateMapper();
+builder.Services.AddSingleton(mapper);
+
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

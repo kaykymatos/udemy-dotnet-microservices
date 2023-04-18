@@ -16,5 +16,7 @@ namespace GeekShooping.ProductApi.Model
         [Required]
         [StringLength(200)]
         public string Description { get; set; } = string.Empty;
+        [NotMapped]
+        List<Product> Products { get; set; }
     }
 }
