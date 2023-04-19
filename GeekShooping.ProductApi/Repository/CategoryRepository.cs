@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
-using GeekShooping.ProductApi.Model;
 using GeekShooping.ProductApi.Data.ValueObjects;
+using GeekShooping.ProductApi.Model;
 using GeekShooping.ProductApi.Model.Context;
 using GeekShooping.ProductApi.Repository;
+using Microsoft.EntityFrameworkCore;
 
 namespace GeekShooping.CategoryApi.Repository
 {
@@ -25,7 +25,7 @@ namespace GeekShooping.CategoryApi.Repository
 
         public async Task<CategoryVO> FindById(long id)
         {
-            Category Category = await _context.Category.Where(x => x.Id == id).FirstOrDefaultAsync()??new Category();
+            Category Category = await _context.Category.Where(x => x.Id == id).FirstOrDefaultAsync() ?? new Category();
 
             return _mapper.Map<CategoryVO>(Category);
         }
@@ -41,8 +41,8 @@ namespace GeekShooping.CategoryApi.Repository
         {
             try
             {
-                var category = await _context.Category.Where(x => x.Id == id).FirstOrDefaultAsync()?? new Category();
-                if (category.Id<=0)
+                var category = await _context.Category.Where(x => x.Id == id).FirstOrDefaultAsync() ?? new Category();
+                if (category.Id <= 0)
                     return false;
                 _context.Category.Remove(category);
                 await _context.SaveChangesAsync();

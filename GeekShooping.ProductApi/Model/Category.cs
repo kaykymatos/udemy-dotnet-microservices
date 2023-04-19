@@ -1,12 +1,11 @@
 ﻿using GeekShooping.ProductApi.Model.Base;
-using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GeekShooping.ProductApi.Model
 {
     [Table("Category")]
-    public class Category:BaseEntity
+    public class Category : BaseEntity
     {
         [Column("Name")]
         [Required]

@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace GeekShooping.ProductApi.Model
 {
     [Table("Product")]
-    public class Product:BaseEntity
+    public class Product : BaseEntity
     {
         [Column("Name")]
         [Required]
@@ -13,8 +13,8 @@ namespace GeekShooping.ProductApi.Model
         public string Name { get; set; } = string.Empty;
         [Column("Price")]
         [Required]
-        [Range(1,10000)]
-        public decimal Price{ get; set; }
+        [Range(1, 10000)]
+        public decimal Price { get; set; }
         [Column("Description")]
         [StringLength(500)]
         public string Description { get; set; } = string.Empty;

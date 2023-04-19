@@ -1,12 +1,11 @@
 ﻿using GeekShooping.ProductApi.Data.ValueObjects;
-using GeekShooping.ProductApi.Model;
 using GeekShooping.ProductApi.Repository;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GeekShooping.ProductApi.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     public class ProductController : Controller
     {
         private readonly IProductRepository _repository;
@@ -49,7 +48,7 @@ namespace GeekShooping.ProductApi.Controllers
         public async Task<IActionResult> FindById(long id)
         {
             var product = await _repository.FindById(id);
-            if (product.Id>=0)
+            if (product.Id >= 0)
                 return NotFound();
             return Ok(product);
         }

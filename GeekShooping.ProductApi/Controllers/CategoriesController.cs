@@ -1,18 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using GeekShooping.ProductApi.Model;
+﻿using GeekShooping.ProductApi.Data.ValueObjects;
 using GeekShooping.ProductApi.Repository;
-using GeekShooping.ProductApi.Data.ValueObjects;
+using Microsoft.AspNetCore.Mvc;
 
 namespace GeekShooping.ProductApi.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     public class CategoriesController : Controller
     {
         private readonly ICategoryRepository _repository;
@@ -28,7 +21,7 @@ namespace GeekShooping.ProductApi.Controllers
             if (category is null)
                 return BadRequest();
 
-            var createCategory =await  _repository.Create(category);
+            var createCategory = await _repository.Create(category);
             return Ok(createCategory);
         }
 

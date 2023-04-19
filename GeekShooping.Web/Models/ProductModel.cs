@@ -1,6 +1,6 @@
-﻿namespace GeekShooping.ProductApi.Data.ValueObjects
+﻿namespace GeekShooping.Web.Models
 {
-    public class ProductVO
+    public class ProductModel
     {
         public long Id { get; set; }
         public string Name { get; set; } = string.Empty;

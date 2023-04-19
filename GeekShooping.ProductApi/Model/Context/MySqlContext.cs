@@ -2,21 +2,21 @@
 
 namespace GeekShooping.ProductApi.Model.Context
 {
-    public class MySqlContext:DbContext
+    public class MySqlContext : DbContext
     {
-        public MySqlContext(){}
-        public MySqlContext(DbContextOptions<MySqlContext> oprions):base(oprions){}
+        public MySqlContext() { }
+        public MySqlContext(DbContextOptions<MySqlContext> oprions) : base(oprions) { }
 
         public DbSet<Category> Category { get; set; }
-        public DbSet<Product> Products { get; set;}
+        public DbSet<Product> Products { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             #region Categorya
             modelBuilder.Entity<Category>().HasData(new Category
             {
-              Id=3,
-              Description="Categoria",
-              Name="Categoria"
+                Id = 3,
+                Description = "Categoria",
+                Name = "Categoria"
             });
             modelBuilder.Entity<Category>().HasData(new Category
             {
