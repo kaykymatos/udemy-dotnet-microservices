@@ -9,7 +9,7 @@ namespace GeekShoopping.ProductApi.Repository
     public class ProductRepository : IProductRepository
     {
         private readonly MySqlContext _context;
-        private IMapper _mapper;
+        private readonly IMapper _mapper;
 
         public ProductRepository(MySqlContext context, IMapper mapper)
         {

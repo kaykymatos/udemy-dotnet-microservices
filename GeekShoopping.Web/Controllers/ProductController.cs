@@ -1,11 +1,12 @@
 ﻿using GeekShoopping.Web.Models;
-using GeekShoopping.Web.Services;
 using GeekShoopping.Web.Services.IServices;
-using Microsoft.AspNetCore.Http;
+using GeekShoopping.Web.Utils;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GeekShoopping.Web.Controllers
 {
+
     public class ProductController : Controller
     {
         private readonly IProductService _service;
@@ -16,6 +17,7 @@ namespace GeekShoopping.Web.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult> ProductIndex()
         {
             var products = await _service.FindAllProducts();
@@ -23,15 +25,15 @@ namespace GeekShoopping.Web.Controllers
         }
 
 
-
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult> ProductCreate()
         {
             return View();
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<ActionResult> ProductCreate(ProductModel model)
         {
             if (ModelState.IsValid)
@@ -40,11 +42,13 @@ namespace GeekShoopping.Web.Controllers
                 if (postProduct != null)
                     return RedirectToAction(nameof(ProductIndex));
             }
-            
+
             return View(model);
         }
 
+
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult> ProductUpdate(long id)
         {
             var product = await _service.FindProductById(id);
@@ -53,9 +57,8 @@ namespace GeekShoopping.Web.Controllers
             return NotFound();
         }
 
-        // POST: ProductController/Edit/5
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<ActionResult> ProductUpdate(ProductModel product)
         {
             if (ModelState.IsValid)
@@ -67,19 +70,21 @@ namespace GeekShoopping.Web.Controllers
             return View(product);
         }
 
+        [Authorize]
         public async Task<IActionResult> ProductDelete(int id)
         {
             var model = await _service.FindProductById(id);
-            if (model != null) 
+            if (model != null)
                 return View(model);
             return NotFound();
         }
 
         [HttpPost]
+        [Authorize(Roles = Role.Admin)]
         public async Task<IActionResult> ProductDelete(ProductModel model)
         {
             var response = await _service.DeleteProductById(model.Id);
-            if (response) 
+            if (response)
                 return RedirectToAction(nameof(ProductIndex));
             return View(model);
         }

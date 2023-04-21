@@ -1,7 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
-
-namespace GeekShoopping.Web.Models
+﻿namespace GeekShoopping.Web.Models
 {
     public class ProductModel
     {

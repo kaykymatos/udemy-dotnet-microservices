@@ -4,11 +4,10 @@
 
 using IdentityModel;
 using Microsoft.AspNetCore.Authentication;
-using System.Collections.Generic;
 using System.Text;
 using System.Text.Json;
 
-namespace IdentityServerHost.Quickstart.UI
+namespace GeekShoopping.IdentityServer.MainModule.Diagnostics
 {
     public class DiagnosticsViewModel
     {

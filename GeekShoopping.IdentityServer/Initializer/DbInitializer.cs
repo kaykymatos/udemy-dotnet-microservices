@@ -1,6 +1,6 @@
-﻿using GeekShoopping.IdentityServer.Model;
+﻿using GeekShoopping.IdentityServer.Configuration;
+using GeekShoopping.IdentityServer.Model;
 using GeekShoopping.IdentityServer.Model.Context;
-using GeekShopping.IdentityServer.Configuration;
 using IdentityModel;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;

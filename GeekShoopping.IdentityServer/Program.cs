@@ -1,7 +1,7 @@
+using GeekShoopping.IdentityServer.Configuration;
 using GeekShoopping.IdentityServer.Initializer;
 using GeekShoopping.IdentityServer.Model;
 using GeekShoopping.IdentityServer.Model.Context;
-using GeekShopping.IdentityServer.Configuration;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 

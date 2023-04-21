@@ -1,8 +1,7 @@
 ﻿using Duende.IdentityServer;
 using Duende.IdentityServer.Models;
-using System.Collections.Generic;
 
-namespace GeekShopping.IdentityServer.Configuration
+namespace GeekShoopping.IdentityServer.Configuration
 {
     public static class IdentityConfiguration
     {
@@ -18,7 +17,7 @@ namespace GeekShopping.IdentityServer.Configuration
             };
         public static IEnumerable<ApiScope> ApiScopes =>
             new List<ApiScope>
-            { 
+            {
                 new ApiScope("geek_shopping", "GeekShopping Server"),
                 new ApiScope(name: "read", "Read data."),
                 new ApiScope(name: "write", "Write data."),
