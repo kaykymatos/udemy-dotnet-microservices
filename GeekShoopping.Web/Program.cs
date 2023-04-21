@@ -5,7 +5,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddHttpClient<IProductService, ProductService>(c =>
-    c.BaseAddress = new Uri(builder.Configuration["ServieUrls:ProductApi"])
+    c.BaseAddress = new Uri(builder.Configuration["ServiceUrls:ProductApi"])
     );
 
 builder.Services.AddControllersWithViews();
@@ -17,6 +17,8 @@ if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
 }
+app.UseHttpsRedirection();
+
 app.UseStaticFiles();
 
 app.UseRouting();
