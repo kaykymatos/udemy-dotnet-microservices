@@ -3,6 +3,7 @@
 
 
 using Duende.IdentityServer.Models;
+using GeekShoopping.IdentityServer.MainModule.Account;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GeekShoopping.IdentityServer.MainModule
