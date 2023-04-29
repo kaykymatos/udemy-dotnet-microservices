@@ -1,7 +1,9 @@
+using Duende.IdentityServer.Services;
 using GeekShoopping.IdentityServer.Configuration;
 using GeekShoopping.IdentityServer.Initializer;
 using GeekShoopping.IdentityServer.Model;
 using GeekShoopping.IdentityServer.Model.Context;
+using GeekShoopping.IdentityServer.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -33,6 +35,7 @@ var builderServices = builder.Services.AddIdentityServer(options =>
     .AddAspNetIdentity<ApplicationUser>();
 
 builder.Services.AddScoped<IDbInitializer, DbInitializer>();
+builder.Services.AddScoped<IProfileService, ProfileService>();
 
 builderServices.AddDeveloperSigningCredential();
 

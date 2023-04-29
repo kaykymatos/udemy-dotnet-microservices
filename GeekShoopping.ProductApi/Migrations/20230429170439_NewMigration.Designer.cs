@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GeekShoopping.ProductApi.Migrations
 {
     [DbContext(typeof(MySqlContext))]
-    [Migration("20230416222744_AddProductAndCategoryDataTablesOnDb")]
-    partial class AddProductAndCategoryDataTablesOnDb
+    [Migration("20230429170439_NewMigration")]
+    partial class NewMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,30 +20,6 @@ namespace GeekShoopping.ProductApi.Migrations
                 .HasAnnotation("ProductVersion", "6.0.16")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
-            modelBuilder.Entity("GeekShoopping.ProductApi.Model.Category", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasColumnName("Id");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("varchar(200)")
-                        .HasColumnName("Description");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)")
-                        .HasColumnName("Name");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Category");
-                });
-
             modelBuilder.Entity("GeekShoopping.ProductApi.Model.Product", b =>
                 {
                     b.Property<long>("Id")
@@ -51,21 +27,18 @@ namespace GeekShoopping.ProductApi.Migrations
                         .HasColumnType("bigint")
                         .HasColumnName("Id");
 
-                    b.Property<long>("Category_Id")
-                        .HasColumnType("bigint")
-                        .HasColumnName("Category_Id");
+                    b.Property<string>("CategoryName")
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("varchar(500)")
                         .HasColumnName("Description");
 
-                    b.Property<string>("Image_Url")
-                        .IsRequired()
+                    b.Property<string>("ImageURL")
                         .HasMaxLength(300)
                         .HasColumnType("varchar(300)")
-                        .HasColumnName("Image_Url");
+                        .HasColumnName("ImageUrl");
 
                     b.Property<string>("Name")
                         .IsRequired()

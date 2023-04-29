@@ -26,20 +26,17 @@ namespace GeekShoopping.ProductApi.Migrations
                         .HasColumnName("Id");
 
                     b.Property<string>("CategoryName")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("varchar(500)")
                         .HasColumnName("Description");
 
                     b.Property<string>("ImageURL")
-                        .IsRequired()
                         .HasMaxLength(300)
                         .HasColumnType("varchar(300)")
-                        .HasColumnName("Image_Url");
+                        .HasColumnName("ImageUrl");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -53,7 +50,7 @@ namespace GeekShoopping.ProductApi.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Product", (string)null);
+                    b.ToTable("Product");
 
                     b.HasData(
                         new
