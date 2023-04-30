@@ -41,7 +41,6 @@ namespace GeekShoopping.ProductApi.Controllers
         }
 
         [HttpGet]
-        [Authorize]
         public async Task<IActionResult> FindAll()
         {
             var productList = await _repository.FindAll();
