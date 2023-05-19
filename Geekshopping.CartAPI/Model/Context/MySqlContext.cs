@@ -6,8 +6,8 @@ namespace Geekshopping.CartAPI.Model.Context
     {
         public MySqlContext(DbContextOptions<MySqlContext> oprions) : base(oprions) { }
 
-        public DbSet<Product> Product{ get; set; }
-        public DbSet<CartDetail> CartDetail{ get; set; }
-        public DbSet<CartHeader> CartHeaders{ get; set; }
+        public DbSet<Product> Product { get; set; }
+        public DbSet<CartDetail> CartDetail { get; set; }
+        public DbSet<CartHeader> CartHeaders { get; set; }
     }
 }
