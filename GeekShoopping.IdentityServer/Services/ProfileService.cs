@@ -35,7 +35,7 @@ namespace GeekShoopping.IdentityServer.Services
             if (_userManager.SupportsUserRole)
             {
                 IList<string> roles = await _userManager.GetRolesAsync(user);
-                foreach (var role in roles)
+                foreach (string role in roles)
                 {
                     claims.Add(new Claim(JwtClaimTypes.Role, role));
                     if (_roleManager.SupportsRoleClaims)

@@ -7,12 +7,12 @@ using GeekShoopping.IdentityServer.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
-var builder = WebApplication.CreateBuilder(args);
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-var connection = builder.Configuration["MySqlConnection:MySqlConnectionString"];
+string connection = builder.Configuration["MySqlConnection:MySqlConnectionString"];
 builder.Services.AddDbContext<MySqlContext>(options => options.UseMySql(connection,
         new MySqlServerVersion(
                 new Version(8, 0, 32))));
@@ -21,7 +21,7 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
     .AddEntityFrameworkStores<MySqlContext>()
     .AddDefaultTokenProviders();
 
-var builderServices = builder.Services.AddIdentityServer(options =>
+IIdentityServerBuilder builderServices = builder.Services.AddIdentityServer(options =>
 {
     options.Events.RaiseErrorEvents = true;
     options.Events.RaiseInformationEvents = true;
@@ -39,9 +39,9 @@ builder.Services.AddScoped<IProfileService, ProfileService>();
 
 builderServices.AddDeveloperSigningCredential();
 
-var app = builder.Build();
+WebApplication app = builder.Build();
 
-var initializer = app.Services.CreateScope().ServiceProvider.GetService<IDbInitializer>();
+IDbInitializer initializer = app.Services.CreateScope().ServiceProvider.GetService<IDbInitializer>();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

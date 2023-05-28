@@ -58,17 +58,17 @@ namespace GeekShoopping.IdentityServer.MainModule.Grants
 
         private async Task<GrantsViewModel> BuildViewModelAsync()
         {
-            var grants = await _interaction.GetAllUserGrantsAsync();
+            IEnumerable<Duende.IdentityServer.Models.Grant> grants = await _interaction.GetAllUserGrantsAsync();
 
-            var list = new List<GrantViewModel>();
-            foreach (var grant in grants)
+            List<GrantViewModel> list = new();
+            foreach (Duende.IdentityServer.Models.Grant grant in grants)
             {
-                var client = await _clients.FindClientByIdAsync(grant.ClientId);
+                Duende.IdentityServer.Models.Client client = await _clients.FindClientByIdAsync(grant.ClientId);
                 if (client != null)
                 {
-                    var resources = await _resources.FindResourcesByScopeAsync(grant.Scopes);
+                    Duende.IdentityServer.Models.Resources resources = await _resources.FindResourcesByScopeAsync(grant.Scopes);
 
-                    var item = new GrantViewModel()
+                    GrantViewModel item = new()
                     {
                         ClientId = client.ClientId,
                         ClientName = client.ClientName ?? client.ClientId,

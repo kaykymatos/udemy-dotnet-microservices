@@ -24,7 +24,7 @@ namespace GeekShoopping.ProductApi.Controllers
             if (product is null)
                 return BadRequest();
 
-            var createProduct = await _repository.Create(product);
+            ProductVO createProduct = await _repository.Create(product);
             return Ok(createProduct);
         }
 
@@ -36,14 +36,14 @@ namespace GeekShoopping.ProductApi.Controllers
             if (product is null)
                 return BadRequest();
 
-            var createProduct = await _repository.Update(product);
+            ProductVO createProduct = await _repository.Update(product);
             return Ok(createProduct);
         }
 
         [HttpGet]
         public async Task<IActionResult> FindAll()
         {
-            var productList = await _repository.FindAll();
+            IEnumerable<ProductVO> productList = await _repository.FindAll();
             if (productList is null)
                 return NoContent();
             return Ok(productList);
@@ -52,7 +52,7 @@ namespace GeekShoopping.ProductApi.Controllers
         [Authorize]
         public async Task<IActionResult> FindById(long id)
         {
-            var product = await _repository.FindById(id);
+            ProductVO product = await _repository.FindById(id);
             if (product.Id <= 0)
                 return NotFound();
             return Ok(product);
@@ -62,7 +62,7 @@ namespace GeekShoopping.ProductApi.Controllers
         [Authorize(Roles = Role.Admin)]
         public async Task<IActionResult> Delete(long id)
         {
-            var deleteProduct = await _repository.Delete(id);
+            bool deleteProduct = await _repository.Delete(id);
             if (deleteProduct)
                 return Ok();
             return BadRequest();

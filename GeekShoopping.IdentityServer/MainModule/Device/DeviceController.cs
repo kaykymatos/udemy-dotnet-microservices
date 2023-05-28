@@ -43,7 +43,7 @@ namespace GeekShoopping.IdentityServer.MainModule.Device
             string userCode = Request.Query[userCodeParamName];
             if (string.IsNullOrWhiteSpace(userCode)) return View("UserCodeCapture");
 
-            var vm = await BuildViewModelAsync(userCode);
+            DeviceAuthorizationViewModel vm = await BuildViewModelAsync(userCode);
             if (vm == null) return View("Error");
 
             vm.ConfirmUserCode = true;
@@ -54,7 +54,7 @@ namespace GeekShoopping.IdentityServer.MainModule.Device
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> UserCodeCapture(string userCode)
         {
-            var vm = await BuildViewModelAsync(userCode);
+            DeviceAuthorizationViewModel vm = await BuildViewModelAsync(userCode);
             if (vm == null) return View("Error");
 
             return View("UserCodeConfirmation", vm);
@@ -66,7 +66,7 @@ namespace GeekShoopping.IdentityServer.MainModule.Device
         {
             if (model == null) throw new ArgumentNullException(nameof(model));
 
-            var result = await ProcessConsent(model);
+            ProcessConsentResult result = await ProcessConsent(model);
             if (result.HasValidationError) return View("Error");
 
             return View("Success");
@@ -74,9 +74,9 @@ namespace GeekShoopping.IdentityServer.MainModule.Device
 
         private async Task<ProcessConsentResult> ProcessConsent(DeviceAuthorizationInputModel model)
         {
-            var result = new ProcessConsentResult();
+            ProcessConsentResult result = new();
 
-            var request = await _interaction.GetAuthorizationContextAsync(model.UserCode);
+            DeviceFlowAuthorizationRequest request = await _interaction.GetAuthorizationContextAsync(model.UserCode);
             if (request == null) return result;
 
             ConsentResponse grantedConsent = null;
@@ -95,7 +95,7 @@ namespace GeekShoopping.IdentityServer.MainModule.Device
                 // if the user consented to some scope, build the response model
                 if (model.ScopesConsented != null && model.ScopesConsented.Any())
                 {
-                    var scopes = model.ScopesConsented;
+                    IEnumerable<string> scopes = model.ScopesConsented;
                     if (ConsentOptions.EnableOfflineAccess == false)
                     {
                         scopes = scopes.Where(x => x != Duende.IdentityServer.IdentityServerConstants.StandardScopes.OfflineAccess);
@@ -141,7 +141,7 @@ namespace GeekShoopping.IdentityServer.MainModule.Device
 
         private async Task<DeviceAuthorizationViewModel> BuildViewModelAsync(string userCode, DeviceAuthorizationInputModel model = null)
         {
-            var request = await _interaction.GetAuthorizationContextAsync(userCode);
+            DeviceFlowAuthorizationRequest request = await _interaction.GetAuthorizationContextAsync(userCode);
             if (request != null)
             {
                 return CreateConsentViewModel(userCode, model, request);
@@ -152,7 +152,7 @@ namespace GeekShoopping.IdentityServer.MainModule.Device
 
         private DeviceAuthorizationViewModel CreateConsentViewModel(string userCode, DeviceAuthorizationInputModel model, DeviceFlowAuthorizationRequest request)
         {
-            var vm = new DeviceAuthorizationViewModel
+            DeviceAuthorizationViewModel vm = new()
             {
                 UserCode = userCode,
                 Description = model?.Description,
@@ -168,13 +168,13 @@ namespace GeekShoopping.IdentityServer.MainModule.Device
 
             vm.IdentityScopes = request.ValidatedResources.Resources.IdentityResources.Select(x => CreateScopeViewModel(x, vm.ScopesConsented.Contains(x.Name) || model == null)).ToArray();
 
-            var apiScopes = new List<ScopeViewModel>();
-            foreach (var parsedScope in request.ValidatedResources.ParsedScopes)
+            List<ScopeViewModel> apiScopes = new();
+            foreach (ParsedScopeValue parsedScope in request.ValidatedResources.ParsedScopes)
             {
-                var apiScope = request.ValidatedResources.Resources.FindApiScope(parsedScope.ParsedName);
+                ApiScope apiScope = request.ValidatedResources.Resources.FindApiScope(parsedScope.ParsedName);
                 if (apiScope != null)
                 {
-                    var scopeVm = CreateScopeViewModel(parsedScope, apiScope, vm.ScopesConsented.Contains(parsedScope.RawValue) || model == null);
+                    ScopeViewModel scopeVm = CreateScopeViewModel(parsedScope, apiScope, vm.ScopesConsented.Contains(parsedScope.RawValue) || model == null);
                     apiScopes.Add(scopeVm);
                 }
             }

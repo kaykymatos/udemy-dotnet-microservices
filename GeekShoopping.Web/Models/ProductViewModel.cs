@@ -2,7 +2,7 @@
 
 namespace GeekShoopping.Web.Models
 {
-    public class ProductModel
+    public class ProductViewModel
     {
         public long Id { get; set; }
         public string Name { get; set; } = string.Empty;
@@ -10,8 +10,8 @@ namespace GeekShoopping.Web.Models
         public string Description { get; set; } = string.Empty;
         public string CategoryName { get; set; } = string.Empty;
         public string ImageURL { get; set; } = string.Empty;
-        [Range(1,100)]
-        public int Count { get; set; } = 1  ;
+        [Range(1, 100)]
+        public int Count { get; set; } = 1;
         public string SubstringName()
         {
             if (Name.Length < 24)

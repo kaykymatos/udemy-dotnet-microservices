@@ -2,11 +2,14 @@ using GeekShoopping.Web.Services;
 using GeekShoopping.Web.Services.IServices;
 using Microsoft.AspNetCore.Authentication;
 
-var builder = WebApplication.CreateBuilder(args);
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddHttpClient<IProductService, ProductService>(c =>
     c.BaseAddress = new Uri(builder.Configuration["ServiceUrls:ProductApi"])
+    );
+builder.Services.AddHttpClient<ICartService, CartService>(c =>
+    c.BaseAddress = new Uri(builder.Configuration["ServiceUrls:CartApi"])
     );
 
 builder.Services.AddControllersWithViews();
@@ -32,7 +35,7 @@ builder.Services.AddAuthentication(options =>
         options.SaveTokens = true;
     });
 
-var app = builder.Build();
+WebApplication app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

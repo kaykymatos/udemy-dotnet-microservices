@@ -67,7 +67,7 @@ namespace GeekShoopping.IdentityServer.MainModule.Account
         public async Task<IActionResult> Login(string returnUrl)
         {
             // build a model so we know what to show on the login page
-            var vm = await BuildLoginViewModelAsync(returnUrl);
+            LoginViewModel vm = await BuildLoginViewModelAsync(returnUrl);
 
             if (vm.IsExternalLoginOnly)
             {
@@ -86,7 +86,7 @@ namespace GeekShoopping.IdentityServer.MainModule.Account
         public async Task<IActionResult> Login(LoginInputModel model, string button)
         {
             // check if we are in the context of an authorization request
-            var context = await _interaction.GetAuthorizationContextAsync(model.ReturnUrl);
+            AuthorizationRequest context = await _interaction.GetAuthorizationContextAsync(model.ReturnUrl);
 
             // the user clicked the "cancel" button
             if (button != "login")
@@ -117,14 +117,14 @@ namespace GeekShoopping.IdentityServer.MainModule.Account
 
             if (ModelState.IsValid)
             {
-                var result = await _signInManager.PasswordSignInAsync(
+                Microsoft.AspNetCore.Identity.SignInResult result = await _signInManager.PasswordSignInAsync(
                     model.Username,
                     model.Password,
                     model.RememberLogin,
                     lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
-                    var user = await _userManager.FindByNameAsync(model.Username);
+                    ApplicationUser user = await _userManager.FindByNameAsync(model.Username);
                     await _events.RaiseAsync(
                         new UserLoginSuccessEvent(user.UserName,
                             user.Id,
@@ -144,7 +144,7 @@ namespace GeekShoopping.IdentityServer.MainModule.Account
                     };
 
                     // issue authentication cookie with subject ID and username
-                    var isuser = new IdentityServerUser(user.Id)
+                    IdentityServerUser isuser = new(user.Id)
                     {
                         DisplayName = user.UserName
                     };
@@ -185,7 +185,7 @@ namespace GeekShoopping.IdentityServer.MainModule.Account
             }
 
             // something went wrong, show form with error
-            var vm = await BuildLoginViewModelAsync(model);
+            LoginViewModel vm = await BuildLoginViewModelAsync(model);
             return View(vm);
         }
 
@@ -197,7 +197,7 @@ namespace GeekShoopping.IdentityServer.MainModule.Account
         public async Task<IActionResult> Logout(string logoutId)
         {
             // build a model so the logout page knows what to display
-            var vm = await BuildLogoutViewModelAsync(logoutId);
+            LogoutViewModel vm = await BuildLogoutViewModelAsync(logoutId);
 
             if (vm.ShowLogoutPrompt == false)
             {
@@ -217,7 +217,7 @@ namespace GeekShoopping.IdentityServer.MainModule.Account
         public async Task<IActionResult> Logout(LogoutInputModel model)
         {
             // build a model so the logged out page knows what to display
-            var vm = await BuildLoggedOutViewModelAsync(model.LogoutId);
+            LoggedOutViewModel vm = await BuildLoggedOutViewModelAsync(model.LogoutId);
 
             if (User?.Identity.IsAuthenticated == true)
             {
@@ -253,7 +253,7 @@ namespace GeekShoopping.IdentityServer.MainModule.Account
         public async Task<IActionResult> Register(string returnUrl)
         {
             // build a model so we know what to show on the reg page
-            var vm = await BuildRegisterViewModelAsync(returnUrl);
+            RegisterViewModel vm = await BuildRegisterViewModelAsync(returnUrl);
 
             return View(vm);
         }
@@ -267,7 +267,7 @@ namespace GeekShoopping.IdentityServer.MainModule.Account
             if (ModelState.IsValid)
             {
 
-                var user = new ApplicationUser
+                ApplicationUser user = new()
                 {
                     UserName = model.Username,
                     Email = model.Email,
@@ -276,12 +276,12 @@ namespace GeekShoopping.IdentityServer.MainModule.Account
                     LastName = model.LastName
                 };
 
-                var result = await _userManager.CreateAsync(user, model.Password);
+                IdentityResult result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
                     if (!_roleManager.RoleExistsAsync(model.RoleName).GetAwaiter().GetResult())
                     {
-                        var userRole = new IdentityRole
+                        IdentityRole userRole = new()
                         {
                             Name = model.RoleName,
                             NormalizedName = model.RoleName,
@@ -300,11 +300,11 @@ namespace GeekShoopping.IdentityServer.MainModule.Account
                     new Claim(JwtClaimTypes.WebSite, $"http://{model.Username}.com"),
                     new Claim(JwtClaimTypes.Role,"User") });
 
-                    var context = await _interaction.GetAuthorizationContextAsync(model.ReturnUrl);
-                    var loginresult = await _signInManager.PasswordSignInAsync(model.Username, model.Password, false, lockoutOnFailure: true);
+                    AuthorizationRequest context = await _interaction.GetAuthorizationContextAsync(model.ReturnUrl);
+                    Microsoft.AspNetCore.Identity.SignInResult loginresult = await _signInManager.PasswordSignInAsync(model.Username, model.Password, false, lockoutOnFailure: true);
                     if (loginresult.Succeeded)
                     {
-                        var checkuser = await _userManager.FindByNameAsync(model.Username);
+                        ApplicationUser checkuser = await _userManager.FindByNameAsync(model.Username);
                         await _events.RaiseAsync(new UserLoginSuccessEvent(checkuser.UserName, checkuser.Id, checkuser.UserName, clientId: context?.Client.ClientId));
 
                         if (context != null)
@@ -345,17 +345,17 @@ namespace GeekShoopping.IdentityServer.MainModule.Account
 
         private async Task<RegisterViewModel> BuildRegisterViewModelAsync(string returnUrl)
         {
-            var context = await _interaction.GetAuthorizationContextAsync(returnUrl);
-            List<string> roles = new List<string>();
+            AuthorizationRequest context = await _interaction.GetAuthorizationContextAsync(returnUrl);
+            List<string> roles = new();
             roles.Add("Admin");
             roles.Add("Client");
             ViewBag.message = roles;
             if (context?.IdP != null && await _schemeProvider.GetSchemeAsync(context.IdP) != null)
             {
-                var local = context.IdP == IdentityServerConstants.LocalIdentityProvider;
+                bool local = context.IdP == IdentityServerConstants.LocalIdentityProvider;
 
                 // this is meant to short circuit the UI and only trigger the one external IdP
-                var vm = new RegisterViewModel
+                RegisterViewModel vm = new()
                 {
                     EnableLocalLogin = local,
                     ReturnUrl = returnUrl,
@@ -370,9 +370,9 @@ namespace GeekShoopping.IdentityServer.MainModule.Account
                 return vm;
             }
 
-            var schemes = await _schemeProvider.GetAllSchemesAsync();
+            IEnumerable<AuthenticationScheme> schemes = await _schemeProvider.GetAllSchemesAsync();
 
-            var providers = schemes
+            List<ExternalProvider> providers = schemes
                 .Where(x => x.DisplayName != null)
                 .Select(x => new ExternalProvider
                 {
@@ -380,10 +380,10 @@ namespace GeekShoopping.IdentityServer.MainModule.Account
                     AuthenticationScheme = x.Name
                 }).ToList();
 
-            var allowLocal = true;
+            bool allowLocal = true;
             if (context?.Client.ClientId != null)
             {
-                var client = await _clientStore.FindEnabledClientByIdAsync(context.Client.ClientId);
+                Client client = await _clientStore.FindEnabledClientByIdAsync(context.Client.ClientId);
                 if (client != null)
                 {
                     allowLocal = client.EnableLocalLogin;
@@ -410,13 +410,13 @@ namespace GeekShoopping.IdentityServer.MainModule.Account
         /*****************************************/
         private async Task<LoginViewModel> BuildLoginViewModelAsync(string returnUrl)
         {
-            var context = await _interaction.GetAuthorizationContextAsync(returnUrl);
+            AuthorizationRequest context = await _interaction.GetAuthorizationContextAsync(returnUrl);
             if (context?.IdP != null && await _schemeProvider.GetSchemeAsync(context.IdP) != null)
             {
-                var local = context.IdP == Duende.IdentityServer.IdentityServerConstants.LocalIdentityProvider;
+                bool local = context.IdP == Duende.IdentityServer.IdentityServerConstants.LocalIdentityProvider;
 
                 // this is meant to short circuit the UI and only trigger the one external IdP
-                var vm = new LoginViewModel
+                LoginViewModel vm = new()
                 {
                     EnableLocalLogin = local,
                     ReturnUrl = returnUrl,
@@ -431,9 +431,9 @@ namespace GeekShoopping.IdentityServer.MainModule.Account
                 return vm;
             }
 
-            var schemes = await _schemeProvider.GetAllSchemesAsync();
+            IEnumerable<AuthenticationScheme> schemes = await _schemeProvider.GetAllSchemesAsync();
 
-            var providers = schemes
+            List<ExternalProvider> providers = schemes
                 .Where(x => x.DisplayName != null)
                 .Select(x => new ExternalProvider
                 {
@@ -441,7 +441,7 @@ namespace GeekShoopping.IdentityServer.MainModule.Account
                     AuthenticationScheme = x.Name
                 }).ToList();
 
-            var dyanmicSchemes = (await _identityProviderStore.GetAllSchemeNamesAsync())
+            IEnumerable<ExternalProvider> dyanmicSchemes = (await _identityProviderStore.GetAllSchemeNamesAsync())
                 .Where(x => x.Enabled)
                 .Select(x => new ExternalProvider
                 {
@@ -450,10 +450,10 @@ namespace GeekShoopping.IdentityServer.MainModule.Account
                 });
             providers.AddRange(dyanmicSchemes);
 
-            var allowLocal = true;
+            bool allowLocal = true;
             if (context?.Client.ClientId != null)
             {
-                var client = await _clientStore.FindEnabledClientByIdAsync(context.Client.ClientId);
+                Client client = await _clientStore.FindEnabledClientByIdAsync(context.Client.ClientId);
                 if (client != null)
                 {
                     allowLocal = client.EnableLocalLogin;
@@ -477,7 +477,7 @@ namespace GeekShoopping.IdentityServer.MainModule.Account
 
         private async Task<LoginViewModel> BuildLoginViewModelAsync(LoginInputModel model)
         {
-            var vm = await BuildLoginViewModelAsync(model.ReturnUrl);
+            LoginViewModel vm = await BuildLoginViewModelAsync(model.ReturnUrl);
             vm.Username = model.Username;
             vm.RememberLogin = model.RememberLogin;
             return vm;
@@ -485,7 +485,7 @@ namespace GeekShoopping.IdentityServer.MainModule.Account
 
         private async Task<LogoutViewModel> BuildLogoutViewModelAsync(string logoutId)
         {
-            var vm = new LogoutViewModel { LogoutId = logoutId, ShowLogoutPrompt = AccountOptions.ShowLogoutPrompt };
+            LogoutViewModel vm = new() { LogoutId = logoutId, ShowLogoutPrompt = AccountOptions.ShowLogoutPrompt };
 
             if (User?.Identity.IsAuthenticated != true)
             {
@@ -494,7 +494,7 @@ namespace GeekShoopping.IdentityServer.MainModule.Account
                 return vm;
             }
 
-            var context = await _interaction.GetLogoutContextAsync(logoutId);
+            LogoutRequest context = await _interaction.GetLogoutContextAsync(logoutId);
             if (context?.ShowSignoutPrompt == false)
             {
                 // it's safe to automatically sign-out
@@ -510,9 +510,9 @@ namespace GeekShoopping.IdentityServer.MainModule.Account
         private async Task<LoggedOutViewModel> BuildLoggedOutViewModelAsync(string logoutId)
         {
             // get context information (client name, post logout redirect URI and iframe for federated signout)
-            var logout = await _interaction.GetLogoutContextAsync(logoutId);
+            LogoutRequest logout = await _interaction.GetLogoutContextAsync(logoutId);
 
-            var vm = new LoggedOutViewModel
+            LoggedOutViewModel vm = new()
             {
                 AutomaticRedirectAfterSignOut = AccountOptions.AutomaticRedirectAfterSignOut,
                 PostLogoutRedirectUri = logout?.PostLogoutRedirectUri,
@@ -523,10 +523,10 @@ namespace GeekShoopping.IdentityServer.MainModule.Account
 
             if (User?.Identity.IsAuthenticated == true)
             {
-                var idp = User.FindFirst(JwtClaimTypes.IdentityProvider)?.Value;
+                string idp = User.FindFirst(JwtClaimTypes.IdentityProvider)?.Value;
                 if (idp != null && idp != Duende.IdentityServer.IdentityServerConstants.LocalIdentityProvider)
                 {
-                    var providerSupportsSignout = await HttpContext.GetSchemeSupportsSignOutAsync(idp);
+                    bool providerSupportsSignout = await HttpContext.GetSchemeSupportsSignOutAsync(idp);
                     if (providerSupportsSignout)
                     {
                         if (vm.LogoutId == null)

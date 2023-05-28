@@ -8,7 +8,7 @@ namespace Geekshopping.CartAPI.Config
     {
         public static MapperConfiguration RegisterMaps()
         {
-            var mappingConfig = new MapperConfiguration(config =>
+            MapperConfiguration mappingConfig = new(config =>
             {
                 config.CreateMap<CartDetailVO, CartDetail>().ReverseMap();
                 config.CreateMap<CartHeaderVO, CartHeader>().ReverseMap();

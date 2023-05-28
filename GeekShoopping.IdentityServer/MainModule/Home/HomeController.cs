@@ -40,10 +40,10 @@ namespace GeekShoopping.IdentityServer.MainModule.Home
         /// </summary>
         public async Task<IActionResult> Error(string errorId)
         {
-            var vm = new ErrorViewModel();
+            ErrorViewModel vm = new();
 
             // retrieve error details from identityserver
-            var message = await _interaction.GetErrorContextAsync(errorId);
+            Duende.IdentityServer.Models.ErrorMessage message = await _interaction.GetErrorContextAsync(errorId);
             if (message != null)
             {
                 vm.Error = message;

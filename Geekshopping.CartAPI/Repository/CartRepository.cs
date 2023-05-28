@@ -23,14 +23,14 @@ namespace Geekshopping.CartAPI.Repository
 
         public async Task<bool> ClearCart(string userId)
         {
-            var cartHeader = await _context.CartHeaders
+            CartHeader cartHeader = await _context.CartHeaders
                          .FirstOrDefaultAsync(x => x.UserId == userId);
 
             if (cartHeader != null)
             {
 
 
-                _context.CartDetail.RemoveRange(_context.CartDetail.Where(x=>x.CartHeaderId==cartHeader.Id));
+                _context.CartDetail.RemoveRange(_context.CartDetail.Where(x => x.CartHeaderId == cartHeader.Id));
                 _context.CartHeaders.Remove(cartHeader);
                 await _context.SaveChangesAsync();
                 return true;
@@ -58,7 +58,7 @@ namespace Geekshopping.CartAPI.Repository
         {
             try
             {
-                var cartDetail = await _context.CartDetail
+                CartDetail cartDetail = await _context.CartDetail
                     .FirstOrDefaultAsync(x => x.Id == cartDetailsId);
 
                 int total = _context.CartDetail
@@ -67,7 +67,7 @@ namespace Geekshopping.CartAPI.Repository
                 _context.CartDetail.Remove(cartDetail);
                 if (total == 1)
                 {
-                    var cartHeaderToRemove = await _context.CartHeaders
+                    CartHeader cartHeaderToRemove = await _context.CartHeaders
                         .FirstOrDefaultAsync(x => x.Id == cartDetail.CartHeaderId);
                     _context.CartHeaders.Remove(cartHeaderToRemove);
 
@@ -84,7 +84,7 @@ namespace Geekshopping.CartAPI.Repository
         public async Task<CartVO> SaveOrUpdateCart(CartVO vo)
         {
             Cart cart = _mapper.Map<Cart>(vo);
-            var product = await _context.Product.FirstOrDefaultAsync(
+            Product product = await _context.Product.FirstOrDefaultAsync(
                 x =>
                 x.Id == vo.CartDetails.FirstOrDefault().ProductId);
             if (product == null)
@@ -92,7 +92,7 @@ namespace Geekshopping.CartAPI.Repository
                 _context.Product.Add(cart.CartDetails.FirstOrDefault().Product);
                 await _context.SaveChangesAsync();
             }
-            var cartHeader = await _context.CartHeaders.AsNoTracking().FirstOrDefaultAsync(
+            CartHeader cartHeader = await _context.CartHeaders.AsNoTracking().FirstOrDefaultAsync(
                 x =>
                 x.UserId == cart.CartHeader.UserId);
 
@@ -107,14 +107,14 @@ namespace Geekshopping.CartAPI.Repository
             }
             else
             {
-                var carDetail = await _context.CartDetail.AsNoTracking().FirstOrDefaultAsync(
+                CartDetail carDetail = await _context.CartDetail.AsNoTracking().FirstOrDefaultAsync(
                     x =>
-                    x.ProductId == vo.CartDetails.FirstOrDefault().ProductId &&
+                    x.ProductId == cart.CartDetails.FirstOrDefault().ProductId &&
                     x.CartHeaderId == cartHeader.Id);
 
                 if (carDetail == null)
                 {
-                    cart.CartDetails.FirstOrDefault().CartHeaderId = cart.CartHeader.Id;
+                    cart.CartDetails.FirstOrDefault().CartHeaderId = cartHeader.Id;
                     cart.CartDetails.FirstOrDefault().Product = null;
                     _context.CartDetail.Add(cart.CartDetails.FirstOrDefault());
                     await _context.SaveChangesAsync();
