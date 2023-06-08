@@ -6,23 +6,25 @@ namespace Geekshopping.CartAPI.Model
     public class Product
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.None)]
-        [Column("Id")]
+        [Column("id")]
         public long Id { get; set; }
-        [Column("Name")]
+        [Column("name")]
         [Required]
         [MaxLength(150)]
-        public string Name { get; set; } = string.Empty;
-        [Column("Price")]
+        public string Name { get; set; }
+        [Column("price")]
         [Required]
         [Range(1, 10000)]
         public decimal Price { get; set; }
-        [Column("Description")]
+        [Column("description")]
         [StringLength(500)]
-        public string Description { get; set; } = string.Empty;
+        public string Description { get; set; }
+        [Column("category_name")]
+        [StringLength(50)]
         public string CategoryName { get; set; }
 
-        [Column("ImageUrl")]
+        [Column("image_url")]
         [StringLength(300)]
-        public string ImageURL { get; set; } = string.Empty;
+        public string ImageURL { get; set; }
     }
 }

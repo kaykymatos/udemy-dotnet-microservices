@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GeekShoopping.ProductApi.Migrations
 {
     [DbContext(typeof(MySqlContext))]
-    [Migration("20230429170518_InsertDataProduct")]
-    partial class InsertDataProduct
+    [Migration("20230608173634_AddNewMigration")]
+    partial class AddNewMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -25,30 +25,32 @@ namespace GeekShoopping.ProductApi.Migrations
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint")
-                        .HasColumnName("Id");
+                        .HasColumnName("id");
 
                     b.Property<string>("CategoryName")
-                        .HasColumnType("longtext");
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)")
+                        .HasColumnName("category_name");
 
                     b.Property<string>("Description")
                         .HasMaxLength(500)
                         .HasColumnType("varchar(500)")
-                        .HasColumnName("Description");
+                        .HasColumnName("description");
 
                     b.Property<string>("ImageURL")
                         .HasMaxLength(300)
                         .HasColumnType("varchar(300)")
-                        .HasColumnName("ImageUrl");
+                        .HasColumnName("image_url");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(150)
                         .HasColumnType("varchar(150)")
-                        .HasColumnName("Name");
+                        .HasColumnName("name");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(65,30)")
-                        .HasColumnName("Price");
+                        .HasColumnName("price");
 
                     b.HasKey("Id");
 

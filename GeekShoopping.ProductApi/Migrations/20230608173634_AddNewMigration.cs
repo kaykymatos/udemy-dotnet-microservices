@@ -1,16 +1,42 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace GeekShoopping.ProductApi.Migrations
 {
-    public partial class InsertDataProduct : Migration
+    public partial class AddNewMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.AlterDatabase()
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "Product",
+                columns: table => new
+                {
+                    id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    name = table.Column<string>(type: "varchar(150)", maxLength: 150, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    price = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
+                    description = table.Column<string>(type: "varchar(500)", maxLength: 500, nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    category_name = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    image_url = table.Column<string>(type: "varchar(300)", maxLength: 300, nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Product", x => x.id);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
             migrationBuilder.InsertData(
                 table: "Product",
-                columns: new[] { "Id", "CategoryName", "Description", "ImageUrl", "Name", "Price" },
+                columns: new[] { "id", "category_name", "description", "image_url", "name", "price" },
                 values: new object[,]
                 {
                     { 3L, "Category Test", "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.<br/>The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English.<br/>Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy.", "https://github.com/leandrocgsi/erudio-microservices-dotnet6/blob/main/ShoppingImages/3_vader.jpg?raw=true", "Capacete Darth Vader Star Wars Black Series", 999.99m },
@@ -29,60 +55,8 @@ namespace GeekShoopping.ProductApi.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DeleteData(
-                table: "Product",
-                keyColumn: "Id",
-                keyValue: 3L);
-
-            migrationBuilder.DeleteData(
-                table: "Product",
-                keyColumn: "Id",
-                keyValue: 4L);
-
-            migrationBuilder.DeleteData(
-                table: "Product",
-                keyColumn: "Id",
-                keyValue: 5L);
-
-            migrationBuilder.DeleteData(
-                table: "Product",
-                keyColumn: "Id",
-                keyValue: 6L);
-
-            migrationBuilder.DeleteData(
-                table: "Product",
-                keyColumn: "Id",
-                keyValue: 7L);
-
-            migrationBuilder.DeleteData(
-                table: "Product",
-                keyColumn: "Id",
-                keyValue: 8L);
-
-            migrationBuilder.DeleteData(
-                table: "Product",
-                keyColumn: "Id",
-                keyValue: 9L);
-
-            migrationBuilder.DeleteData(
-                table: "Product",
-                keyColumn: "Id",
-                keyValue: 10L);
-
-            migrationBuilder.DeleteData(
-                table: "Product",
-                keyColumn: "Id",
-                keyValue: 11L);
-
-            migrationBuilder.DeleteData(
-                table: "Product",
-                keyColumn: "Id",
-                keyValue: 12L);
-
-            migrationBuilder.DeleteData(
-                table: "Product",
-                keyColumn: "Id",
-                keyValue: 13L);
+            migrationBuilder.DropTable(
+                name: "Product");
         }
     }
 }

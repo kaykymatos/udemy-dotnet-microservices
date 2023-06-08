@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Geekshopping.CartAPI.Model.Base
+namespace GeekShopping.CuponApi.Model.Base
 {
     public class BaseEntity
     {

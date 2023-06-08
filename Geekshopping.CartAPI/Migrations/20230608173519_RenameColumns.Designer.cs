@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Geekshopping.CartAPI.Migrations
 {
     [DbContext(typeof(MySqlContext))]
-    [Migration("20230514182755_AddCartDataTableOnDb")]
-    partial class AddCartDataTableOnDb
+    [Migration("20230608173519_RenameColumns")]
+    partial class RenameColumns
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -25,7 +25,7 @@ namespace Geekshopping.CartAPI.Migrations
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint")
-                        .HasColumnName("Id");
+                        .HasColumnName("id");
 
                     b.Property<long>("CartHeaderId")
                         .HasColumnType("bigint");
@@ -51,15 +51,13 @@ namespace Geekshopping.CartAPI.Migrations
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint")
-                        .HasColumnName("Id");
+                        .HasColumnName("id");
 
                     b.Property<string>("CuponCode")
-                        .IsRequired()
                         .HasColumnType("longtext")
                         .HasColumnName("cupon_code");
 
                     b.Property<string>("UserId")
-                        .IsRequired()
                         .HasColumnType("longtext")
                         .HasColumnName("user_id");
 
@@ -72,33 +70,32 @@ namespace Geekshopping.CartAPI.Migrations
                 {
                     b.Property<long>("Id")
                         .HasColumnType("bigint")
-                        .HasColumnName("Id");
+                        .HasColumnName("id");
 
                     b.Property<string>("CategoryName")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)")
+                        .HasColumnName("category_name");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("varchar(500)")
-                        .HasColumnName("Description");
+                        .HasColumnName("description");
 
                     b.Property<string>("ImageURL")
-                        .IsRequired()
                         .HasMaxLength(300)
                         .HasColumnType("varchar(300)")
-                        .HasColumnName("ImageUrl");
+                        .HasColumnName("image_url");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(150)
                         .HasColumnType("varchar(150)")
-                        .HasColumnName("Name");
+                        .HasColumnName("name");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(65,30)")
-                        .HasColumnName("Price");
+                        .HasColumnName("price");
 
                     b.HasKey("Id");
 

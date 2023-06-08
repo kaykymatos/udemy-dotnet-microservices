@@ -6,7 +6,7 @@ namespace GeekShoopping.ProductApi.Model.Base
     public class BaseEntity
     {
         [Key]
-        [Column("Id")]
+        [Column("id")]
         public long Id { get; set; }
     }
 }
