@@ -1,6 +1,7 @@
 using AutoMapper;
 using GeekShopping.CuponApi.Config;
 using GeekShopping.CuponApi.Model.Context;
+using GeekShopping.CuponApi.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -15,7 +16,7 @@ IMapper mapper = MappingConfig.RegisterMaps().CreateMapper();
 
 builder.Services.AddSingleton(mapper);
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-//builder.Services.AddScoped<ICuponRepository, CuponRepository>();
+builder.Services.AddScoped<ICuponRepository, CuponRepository>();
 builder.Services.AddControllers();
 
 builder.Services.AddAuthentication("Bearer")

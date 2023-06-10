@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using GeekShopping.CuponApi.Data.ValueObjects;
 using GeekShopping.CuponApi.Model.Context;
+using Microsoft.EntityFrameworkCore;
 
 namespace GeekShopping.CuponApi.Repository
 {
@@ -12,6 +14,12 @@ namespace GeekShopping.CuponApi.Repository
         {
             _context = context;
             _mapper = mapper;
+        }
+
+        public async Task<CuponVO> GetCuponByuponCode(string cuponCode)
+        {
+            var cupon = await _context.Cupons.FirstOrDefaultAsync(x => x.CuponCode == cuponCode);
+            return _mapper.Map<CuponVO>(cupon);
         }
     }
 }

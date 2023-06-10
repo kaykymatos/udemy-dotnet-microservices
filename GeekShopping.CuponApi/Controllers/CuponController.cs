@@ -12,5 +12,13 @@ namespace GeekShopping.CuponApi.Controllers
         {
             _repository = repository;
         }
+
+        [HttpGet("{cuponCode}")]
+        public async Task<IActionResult> GetCuponByCuponCode(string cuponCode)
+        {
+            var cupon = await _repository.GetCuponByuponCode(cuponCode);
+            if (cupon == null) return NotFound();
+            return Ok(cupon);
+        }
     }
 }
