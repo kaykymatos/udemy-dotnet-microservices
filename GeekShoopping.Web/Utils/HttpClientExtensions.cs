@@ -1,7 +1,7 @@
 ﻿using System.Net.Http.Headers;
 using System.Text.Json;
 
-namespace GeekShoopping.Web.Utils
+namespace GeekShopping.Web.Utils
 {
     public static class HttpClientExtensions
     {

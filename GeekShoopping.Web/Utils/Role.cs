@@ -1,4 +1,4 @@
-﻿namespace GeekShoopping.Web.Utils
+﻿namespace GeekShopping.Web.Utils
 {
     public static class Role
     {

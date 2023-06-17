@@ -1,6 +1,6 @@
-﻿using GeekShoopping.Web.Models;
+﻿using GeekShopping.Web.Models;
 
-namespace GeekShoopping.Web.Services.IServices
+namespace GeekShopping.Web.Services.IServices
 {
     public interface ICartService
     {

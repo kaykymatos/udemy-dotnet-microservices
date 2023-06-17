@@ -1,5 +1,5 @@
-using GeekShoopping.Web.Services;
-using GeekShoopping.Web.Services.IServices;
+using GeekShopping.Web.Services;
+using GeekShopping.Web.Services.IServices;
 using Microsoft.AspNetCore.Authentication;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);

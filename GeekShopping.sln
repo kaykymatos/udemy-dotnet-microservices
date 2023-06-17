@@ -7,15 +7,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FrontEnd", "FrontEnd", "{61
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{1357A69D-FDBE-4328-AA8F-C042FEF8496D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeekShoopping.Web", "GeekShoopping.Web\GeekShoopping.Web.csproj", "{8710C1AA-F016-4A1B-B658-DBCED9319B1F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeekShopping.Web", "GeekShoopping.Web\GeekShopping.Web.csproj", "{8710C1AA-F016-4A1B-B658-DBCED9319B1F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeekShoopping.ProductApi", "GeekShoopping.ProductApi\GeekShoopping.ProductApi.csproj", "{CB403E88-603C-4712-9C43-5DABB59A2811}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeekShopping.ProductApi", "GeekShoopping.ProductApi\GeekShopping.ProductApi.csproj", "{CB403E88-603C-4712-9C43-5DABB59A2811}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeekShoopping.IdentityServer", "GeekShoopping.IdentityServer\GeekShoopping.IdentityServer.csproj", "{95B5E764-4815-41F7-8C16-4AE00A76DBDE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeekShopping.IdentityServer", "GeekShoopping.IdentityServer\GeekShopping.IdentityServer.csproj", "{95B5E764-4815-41F7-8C16-4AE00A76DBDE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Geekshopping.CartAPI", "Geekshopping.CartAPI\Geekshopping.CartAPI.csproj", "{4C93DDBC-9362-4C75-B76C-87ADE8DBE992}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeekShopping.CartAPI", "Geekshopping.CartAPI\GeekShopping.CartAPI.csproj", "{4C93DDBC-9362-4C75-B76C-87ADE8DBE992}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeekShopping.CuponApi", "GeekShopping.CuponApi\GeekShopping.CuponApi.csproj", "{72CC06F1-E195-49E1-94E3-457B6FE4DD96}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeekShopping.CuponApi", "GeekShopping.CuponApi\GeekShopping.CuponApi.csproj", "{72CC06F1-E195-49E1-94E3-457B6FE4DD96}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
