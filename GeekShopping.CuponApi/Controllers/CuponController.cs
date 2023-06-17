@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace GeekShopping.CuponApi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     [ApiController]
     public class CuponController : ControllerBase
     {
@@ -14,9 +14,9 @@ namespace GeekShopping.CuponApi.Controllers
         }
 
         [HttpGet("{cuponCode}")]
-        public async Task<IActionResult> GetCuponByCuponCode(string cuponCode)
+        public async Task<IActionResult> GetCuponByCuponCode([FromRoute] string cuponCode)
         {
-            var cupon = await _repository.GetCuponByuponCode(cuponCode);
+            Data.ValueObjects.CuponVO cupon = await _repository.GetCuponByCuponCode(cuponCode);
             if (cupon == null) return NotFound();
             return Ok(cupon);
         }

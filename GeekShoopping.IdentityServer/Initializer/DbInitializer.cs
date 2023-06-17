@@ -34,15 +34,15 @@ namespace GeekShoopping.IdentityServer.Initializer
 
             ApplicationUser admin = new()
             {
-                UserName = "leandro-admin",
-                Email = "leandro-admin@gmail.com",
+                UserName = "kayky-admin",
+                Email = "kayky-admin@gmail.com",
                 EmailConfirmed = true,
                 PhoneNumber = "+55 (11) 11111-1111",
-                FirstName = "Leandro",
+                FirstName = "kayky",
                 LastName = "Admin"
             };
 
-            _user.CreateAsync(admin, "Erudio123$").GetAwaiter().GetResult();
+            _user.CreateAsync(admin, "Kayky123$").GetAwaiter().GetResult();
             _user.AddToRoleAsync(admin,
                 IdentityConfiguration.Admin).GetAwaiter().GetResult();
             IdentityResult adminClaims = _user.AddClaimsAsync(admin, new Claim[]
@@ -55,15 +55,15 @@ namespace GeekShoopping.IdentityServer.Initializer
 
             ApplicationUser client = new()
             {
-                UserName = "leandro-client",
-                Email = "leandro-client@gmail.com",
+                UserName = "kayky-client",
+                Email = "kayky-client@gmail.com",
                 EmailConfirmed = true,
                 PhoneNumber = "+55 (11) 11111-1111",
-                FirstName = "Leandro",
+                FirstName = "kayky",
                 LastName = "Client"
             };
 
-            _user.CreateAsync(client, "Erudio123$").GetAwaiter().GetResult();
+            _user.CreateAsync(client, "Kayky123$").GetAwaiter().GetResult();
             _user.AddToRoleAsync(client,
                 IdentityConfiguration.Client).GetAwaiter().GetResult();
             IdentityResult clientClaims = _user.AddClaimsAsync(client, new Claim[]

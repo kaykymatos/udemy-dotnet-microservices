@@ -18,6 +18,8 @@ namespace GeekShoopping.Web.Services
         {
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             HttpResponseMessage response = await _client.GetAsync($"{BasePath}/find-cart/{userId}");
+            if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+                return new CartViewModel();
             return await response.ReadContentAs<CartViewModel>();
         }
         public async Task<CartViewModel> AddItemToCart(CartViewModel cart, string token)
@@ -49,11 +51,24 @@ namespace GeekShoopping.Web.Services
                 throw new Exception("Something wen wrong when calling API");
         }
 
-        public async Task<bool> ApplyCoupon(CartViewModel cart, string couponCode, string token)
+        public async Task<bool> ApplyCoupon(CartViewModel cart, string token)
         {
-            throw new NotImplementedException();
+            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            HttpResponseMessage response = await _client.PostAsJson($"{BasePath}/apply-cupon", cart);
+            if (response.IsSuccessStatusCode)
+                return await response.ReadContentAs<bool>();
+            else
+                throw new Exception("Something wen wrong when calling API");
         }
-
+        public async Task<bool> RemoveCoupon(string userId, string token)
+        {
+            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            HttpResponseMessage response = await _client.DeleteAsync($"{BasePath}/remove-cupon/{userId}");
+            if (response.IsSuccessStatusCode)
+                return await response.ReadContentAs<bool>();
+            else
+                throw new Exception("Something wen wrong when calling API");
+        }
         public async Task<CartViewModel> Checkout(CartHeaderViewModel cartHeader, string token)
         {
             throw new NotImplementedException();
@@ -66,10 +81,7 @@ namespace GeekShoopping.Web.Services
 
 
 
-        public async Task<bool> RemoveCoupon(string userId, string token)
-        {
-            throw new NotImplementedException();
-        }
+
 
 
     }

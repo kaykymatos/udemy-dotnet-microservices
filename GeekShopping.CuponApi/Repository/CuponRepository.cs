@@ -16,9 +16,9 @@ namespace GeekShopping.CuponApi.Repository
             _mapper = mapper;
         }
 
-        public async Task<CuponVO> GetCuponByuponCode(string cuponCode)
+        public async Task<CuponVO> GetCuponByCuponCode(string cuponCode)
         {
-            var cupon = await _context.Cupons.FirstOrDefaultAsync(x => x.CuponCode == cuponCode);
+            Model.Cupon cupon = await _context.Cupons.FirstOrDefaultAsync(x => x.CuponCode == cuponCode);
             return _mapper.Map<CuponVO>(cupon);
         }
     }
