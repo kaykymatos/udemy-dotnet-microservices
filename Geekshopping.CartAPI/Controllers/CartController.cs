@@ -1,6 +1,7 @@
 using Geekshopping.CartAPI.Data.ValueObjects;
 using Geekshopping.CartAPI.Repository;
 using GeekShopping.CartAPI.Messages;
+using GeekShopping.CartAPI.RabbitMQSender;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Geekshopping.CartAPI.Controllers
@@ -9,26 +10,29 @@ namespace Geekshopping.CartAPI.Controllers
     [Route("api/v1/[controller]")]
     public class CartController : ControllerBase
     {
-        private ICartRepository _repository;
+        private readonly ICartRepository _repository;
+        private readonly IRabbitMQMessageSender _rabbitMQMessageSender;
 
-        public CartController(ICartRepository repository)
+        public CartController(ICartRepository repository, IRabbitMQMessageSender rabbitMQMessageSender)
         {
-            _repository = repository ?? throw new
-                ArgumentNullException(nameof(repository));
+            _repository = repository 
+                ?? throw new ArgumentNullException(nameof(repository));
+            _rabbitMQMessageSender = rabbitMQMessageSender 
+                ?? throw new ArgumentNullException(nameof(rabbitMQMessageSender));
         }
 
         [HttpGet("find-cart/{id}")]
         public async Task<ActionResult<CartVO>> FindById(string id)
         {
-                var cart = await _repository.FindCartByUserId(id);
-                if (cart == null) return NotFound();
+            CartVO cart = await _repository.FindCartByUserId(id);
+            if (cart == null) return NotFound();
             return Ok(cart);
         }
 
         [HttpPost("add-cart")]
         public async Task<ActionResult<CartVO>> AddCart(CartVO vo)
         {
-            var cart = await _repository.SaveOrUpdateCart(vo);
+            CartVO cart = await _repository.SaveOrUpdateCart(vo);
             if (cart == null) return NotFound();
             return Ok(cart);
         }
@@ -36,7 +40,7 @@ namespace Geekshopping.CartAPI.Controllers
         [HttpPut("update-cart")]
         public async Task<ActionResult<CartVO>> UpdateCart(CartVO vo)
         {
-            var cart = await _repository.SaveOrUpdateCart(vo);
+            CartVO cart = await _repository.SaveOrUpdateCart(vo);
             if (cart == null) return NotFound();
             return Ok(cart);
         }
@@ -44,7 +48,7 @@ namespace Geekshopping.CartAPI.Controllers
         [HttpDelete("remove-cart/{id}")]
         public async Task<ActionResult<CartVO>> RemoveCart(int id)
         {
-            var status = await _repository.RemoveFromCart(id);
+            bool status = await _repository.RemoveFromCart(id);
             if (!status) return BadRequest();
             return Ok(status);
         }
@@ -52,7 +56,7 @@ namespace Geekshopping.CartAPI.Controllers
         [HttpPost("apply-coupon")]
         public async Task<ActionResult<CartVO>> ApplyCoupon(CartVO vo)
         {
-            var status = await _repository.ApplyCupon(vo.CartHeader.UserId, vo.CartHeader.CuponCode);
+            bool status = await _repository.ApplyCupon(vo.CartHeader.UserId, vo.CartHeader.CuponCode);
             if (!status) return NotFound();
             return Ok(status);
         }
@@ -60,7 +64,7 @@ namespace Geekshopping.CartAPI.Controllers
         [HttpDelete("remove-coupon/{userId}")]
         public async Task<ActionResult<CartVO>> ApplyCoupon(string userId)
         {
-            var status = await _repository.RemoveCupon(userId);
+            bool status = await _repository.RemoveCupon(userId);
             if (!status) return NotFound();
             return Ok(status);
         }
@@ -68,13 +72,13 @@ namespace Geekshopping.CartAPI.Controllers
         [HttpPost("checkout")]
         public async Task<ActionResult<CheckoutHeaderVO>> Checkout(CheckoutHeaderVO vo)
         {
-            var cart = await _repository.FindCartByUserId(vo.UserId);
+            if (vo?.UserId == null) return BadRequest();
+            CartVO cart = await _repository.FindCartByUserId(vo.UserId);
             if (cart == null) return NotFound();
             vo.CartDetails = cart.CartDetails;
             vo.DateTime = DateTime.Now;
 
-            //TASK RabbitMQ logic comes here!!!
-
+            _rabbitMQMessageSender.SendMessage(vo, "checkoutqueue");
             return Ok(vo);
         }
     }
