@@ -16,7 +16,7 @@ namespace GeekShopping.OrderApi.Repository
         {
             if (header == null) return false;
 
-            await using var _db = new MySqlContext(_context);
+            await using MySqlContext _db = new(_context);
             _db.Headers.Add(header);
             await _db.SaveChangesAsync();
             return true;
@@ -24,8 +24,8 @@ namespace GeekShopping.OrderApi.Repository
 
         public async Task UpdateOrderPaymentStatus(long orderHeaderId, bool status)
         {
-            await using var _db = new MySqlContext(_context);
-            var header = await _db.Headers.FirstOrDefaultAsync(x => x.Id == orderHeaderId);
+            await using MySqlContext _db = new(_context);
+            OrderHeader header = await _db.Headers.FirstOrDefaultAsync(x => x.Id == orderHeaderId);
             if (header != null)
             {
                 header.PaymentStatus = status;

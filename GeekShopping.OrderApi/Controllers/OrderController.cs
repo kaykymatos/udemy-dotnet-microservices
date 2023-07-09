@@ -6,6 +6,6 @@ namespace GeekShopping.OrderApi.Controllers
     [Route("api/v1/[controller]")]
     public class OrderController : ControllerBase
     {
-        
+
     }
 }

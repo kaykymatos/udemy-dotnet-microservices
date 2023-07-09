@@ -11,7 +11,7 @@ builder.Services.AddDbContext<MySqlContext>(options => options.UseMySql(connecti
         new MySqlServerVersion(
                 new Version(8, 0, 32))));
 
-var builderDb = new DbContextOptionsBuilder<MySqlContext>();
+DbContextOptionsBuilder<MySqlContext> builderDb = new();
 builderDb.UseMySql(connection, new MySqlServerVersion(
                 new Version(8, 0, 32)));
 

@@ -17,7 +17,12 @@ IMapper mapper = MappingConfig.RegisterMaps().CreateMapper();
 
 builder.Services.AddSingleton(mapper);
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
 builder.Services.AddScoped<ICartRepository, CartRepository>();
+builder.Services.AddScoped<ICuponRepository, CuponRepository>();
+builder.Services.AddHttpClient<ICuponRepository, CuponRepository>(s =>
+s.BaseAddress = new Uri(builder.Configuration["ServiceUrls:CuponApi"]));
+
 builder.Services.AddSingleton<IRabbitMQMessageSender, RabbitMQMessageSender>();
 builder.Services.AddControllers();
 

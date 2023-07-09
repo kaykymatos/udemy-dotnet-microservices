@@ -1,7 +1,6 @@
 ﻿using GeekShopping.OrderApi.Messages;
 using GeekShopping.OrderApi.Model;
 using GeekShopping.OrderApi.Repository;
-using NuGet.Protocol.Core.Types;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System.Text;
@@ -12,8 +11,8 @@ namespace GeekShopping.OrderApi.MessageConsumer
     public class RabbitMQCheckoutConsumer : BackgroundService
     {
         private readonly OrderRepository _repository;
-        private IConnection _connection;
-        private IModel _channel;
+        private readonly IConnection _connection;
+        private readonly IModel _channel;
 
         public RabbitMQCheckoutConsumer(OrderRepository repoistory)
         {
@@ -34,10 +33,10 @@ namespace GeekShopping.OrderApi.MessageConsumer
         protected override Task ExecuteAsync(CancellationToken stoppingToken)
         {
             stoppingToken.ThrowIfCancellationRequested();
-            var consumer = new EventingBasicConsumer(_channel);
+            EventingBasicConsumer consumer = new(_channel);
             consumer.Received += (channel, evt) =>
             {
-                var content = Encoding.UTF8.GetString(evt.Body.ToArray());
+                string content = Encoding.UTF8.GetString(evt.Body.ToArray());
                 CheckoutHeaderVO vo = JsonSerializer.Deserialize<CheckoutHeaderVO>(content);
                 ProcessOrder(vo).GetAwaiter().GetResult();
                 _channel.BasicAck(evt.DeliveryTag, false);
@@ -68,7 +67,7 @@ namespace GeekShopping.OrderApi.MessageConsumer
                 DateTime = vo.DateTime
             };
 
-            foreach (var details in vo.CartDetails)
+            foreach (CartDetailVO details in vo.CartDetails)
             {
                 OrderDetail detail = new()
                 {
