@@ -6,8 +6,10 @@ using Geekshopping.CartApi.RabbitMQSender;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+
 string connection = builder.Configuration["MySqlConnection:MySqlConnectionString"];
 builder.Services.AddDbContext<MySqlContext>(options => options.UseMySql(connection,
         new MySqlServerVersion(
