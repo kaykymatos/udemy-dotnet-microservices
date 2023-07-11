@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Geekshopping.CartAPI.Model
+namespace Geekshopping.CartApi.Model
 {
     public class Product
     {

@@ -1,7 +1,7 @@
-﻿using Geekshopping.CartAPI.Data.ValueObjects;
+﻿using Geekshopping.CartApi.Data.ValueObjects;
 using GeekShopping.MessageBus;
 
-namespace GeekShopping.CartAPI.Messages
+namespace Geekshopping.CartApi.Messages
 {
     public class CheckoutHeaderVO : BaseMessage
     {

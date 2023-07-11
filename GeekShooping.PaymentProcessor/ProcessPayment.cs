@@ -8,7 +8,7 @@ namespace GeekShooping.PaymentProcessor
 {
     public class ProcessPayment : IProcessPayment
     {
-        public bool PaymentProcessos()
+        public bool PaymentProcessor()
         {
             return true;
         }

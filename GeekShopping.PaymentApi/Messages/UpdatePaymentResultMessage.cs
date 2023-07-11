@@ -1,6 +1,8 @@
-﻿namespace GeekShopping.OrderApi.Messages
+﻿using GeekShopping.MessageBus;
+
+namespace GeekShopping.PaymentApi.Messages
 {
-    public class UpdatePaymentResultVO
+    public class UpdatePaymentResultMessage: BaseMessage
     {
         public long OrderId { get; set; }
         public bool Status { get; set; }

@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace Geekshopping.CartAPI.Migrations
+namespace Geekshopping.CartApi.Migrations
 {
     public partial class RenameColumns : Migration
     {

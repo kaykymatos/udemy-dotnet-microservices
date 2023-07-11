@@ -1,8 +1,8 @@
-﻿using Geekshopping.CartAPI.Data.ValueObjects;
+﻿using Geekshopping.CartApi.Data.ValueObjects;
 using System.Net.Http.Headers;
 using System.Text.Json;
 
-namespace Geekshopping.CartAPI.Repository
+namespace Geekshopping.CartApi.Repository
 {
     public class CuponRepository : ICuponRepository
     {

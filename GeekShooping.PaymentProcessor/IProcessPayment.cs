@@ -2,6 +2,6 @@
 {
     public interface IProcessPayment
     {
-        bool PaymentProcessos();
+        bool PaymentProcessor();
     }
 }

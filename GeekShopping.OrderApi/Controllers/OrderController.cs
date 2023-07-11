@@ -1,11 +1,10 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
-namespace GeekShopping.OrderApi.Controllers
+namespace GeekShopping.CuponApi.Controllers
 {
-    [ApiController]
     [Route("api/v1/[controller]")]
+    [ApiController]
     public class OrderController : ControllerBase
     {
-
     }
 }
