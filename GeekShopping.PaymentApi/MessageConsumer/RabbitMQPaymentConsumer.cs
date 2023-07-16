@@ -10,7 +10,6 @@ namespace GeekShopping.PaymentApi.MessageConsumer
 {
     public class RabbitMQPaymentConsumer : BackgroundService
     {
-
         private IConnection _connection;
         private IModel _channel;
         private IRabbitMQMessageSender _rabbitMQMessageSender;
@@ -61,7 +60,7 @@ namespace GeekShopping.PaymentApi.MessageConsumer
 
             try
             {
-                _rabbitMQMessageSender.SendMessage(paymentResult, "orderpaymentresultqueue");
+                _rabbitMQMessageSender.SendMessage(paymentResult);
             }
             catch (Exception)
             {
